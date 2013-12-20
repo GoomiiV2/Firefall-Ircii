@@ -1,0 +1,62 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<Component xmlns="http://www.red5studios.com/"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.red5studios.com/ ../../../schemas/component.xsd">
+	<Info
+		title="IRC"
+		author="ArkyChan"
+		description="A in game IRC based chat :D"
+		url="www.arkage.co.cc"
+		uiVersion="1001"
+	/>
+
+	<Events>
+		<Event name="ON_COMPONENT_LOAD"						bind="OnComponentLoad"/>
+		<Event name="ON_BEGIN_CHAT"							bind="OnBeginChat"/>
+	</Events>
+	
+	<Styles>
+		<StyleSheet name="IRCChat" parent="Untinted">
+			font:UbuntuMedium_10;
+			valign:top;
+			halign:left;
+			color:#FFFFFF;
+			bgcolor:#000000;
+			clip:true;
+			wrap:true;
+			leading-mult:1.6;
+			alpha:1.0;
+			shadow:0;
+		</StyleSheet>
+	</Styles>
+	
+	<BluePrints>
+		<BluePrint name="IRCline" instantiable="true">
+			<Group name="grp" dimensions="left:0; top:100%-18; height:18; width:100%;">
+				<StillArt name="plate" dimensions="dock:fill" style="texture:colors; region:white; tint:#000000; alpha:0.5"/>
+				<Text name="text" dimensions="dock:fill" class="IRCChat" style="halign:left; valign:bottom; wrap:true; padding:4;"/>
+			</Group>
+		</BluePrint>
+	</BluePrints>
+	
+	<Frames>
+		<WebFrame name="Web" dimensions="top:0%; left:0%; width:0; height:0;" type-target="false" showloading="true">
+			<Children>
+				<Self dimensions="dock:fill" style="shadow:0"/>
+			</Children>
+			<OnNavigationFinished bind="WebUI_OnNavigationFinished"/>
+		</WebFrame>
+		
+		<PanelFrame name="Main" dimensions="right:100%; width:390; height:244; bottom:66%;" permanent="true" noclick="true" style="texture:colors; region:black; alpha:0.5; clip-children:true;">
+			<Children>
+			<Group id="msgs" dimensions="dock:fill" style="clip-children:true;">
+			
+			</Group>
+				<!-- <StillArt id="BackPlate" dimensions="dock:fill" style="texture:colors; region:white; tint:#000000; alpha:0.25;"/> -->
+			</Children>
+			<OnMessage bind="OnMessage"/>
+		</PanelFrame>
+	</Frames>
+
+</Component>

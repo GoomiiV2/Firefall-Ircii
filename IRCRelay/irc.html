@@ -1,0 +1,105 @@
+<html>
+	<head>
+		<script src="/socket.io/socket.io.js"></script>
+	</head>
+	<body onLoad="Red5.PageLoaded();">
+		<script>
+			var socket = io.connect(Red5.RelayHost);
+		  
+			socket.on('onTopic', function (data) 
+			{
+				if (Red5)
+					Red5.onTopic(data.nick, data.topic);
+			});
+
+			socket.on('onJoin', function (data) 
+			{
+				if (Red5)
+					Red5.onJoin(data.nick);
+			});
+
+			socket.on('onPart', function (data) 
+			{
+				if (Red5)
+					Red5.onPart(data.nick);
+			});
+
+			socket.on('onMessage', function (data) 
+			{
+				if (Red5)
+					Red5.onMessage(data.from, data.to, data.msg);
+			});
+			  
+			socket.on('onPM', function (data) 
+			{
+				if (Red5)
+					Red5.onMessage(data.nick, data.text, data.msg);
+			});
+			
+			socket.on('onMEAction', function (data) 
+			{
+				if (Red5)
+					Red5.onMessagePlain(data.nick, data.text);
+			});
+			
+			socket.on('onNames', function (data) 
+			{
+				if (Red5)
+				{
+					var names = "";
+					for (var nick in data.nicks)
+					{
+						names += "["+nick+"] ";
+					}
+					
+					Red5.onNames(data.channel, names);
+				}
+			});
+			
+			socket.on('onNick', function (data) 
+			{
+				if (Red5)
+				{
+					Red5.onNick(data.channel, data.oldnick, data.newnick);
+				}
+			});
+			
+			socket.on('onServerMsg', function (data) 
+			{
+				if (Red5)
+				{
+					Red5.onServerMsg(data.msg);
+				}
+			});
+		  
+				//============================
+				// LUA Callbacks
+				//============================
+				Red5Callbacks = 
+				{
+					IRC_Connect: function(host, chan, nick, pass)
+					{
+						socket.emit('ircConnect', {"host": host, "chan": chan, "nick": nick, "pass": pass});
+					},
+					
+					IRC_Disconnect: function(data)
+					{
+						socket.emit('ircDisconnect', "");
+					},
+					
+					IRC_Raw: function(data)
+					{
+						socket.emit('ircRaw', data);
+					},
+					
+					IRC_Say: function(msg)
+					{
+						socket.emit('say', msg);
+					}
+				};
+				
+				if (Red5)
+					Red5.PageLoaded();
+		</script>
+	</body>
+</html>
