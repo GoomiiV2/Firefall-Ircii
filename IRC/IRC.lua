@@ -154,7 +154,7 @@ InterfaceOptions.StopGroup();
 -- Called when the ui options are loaded
 UIHELPER.AddUICallback("__LOADED", function(args)
 	if (ircNick == "") then
-		IRCSetNick(Player.GetInfo());
+		IRCSetNick(GetCharacterName());
 	end 
 	
 	if (not ircRememberJoin) then
@@ -403,6 +403,10 @@ function IRCSetNick(newNick)
 	ircNick = newNick;
 	Component.SaveSetting("IRCNICK", ircNick);
 end
+
+-- Return characters name without clan tag
+function GetCharacterName()
+	return string.gsub(Player.GetInfo(), "%[.+%] ", "")
 
 -- Connect to an IRC Server
 function IRCConnect(ircServer, ircChan, ircNicky, password)
