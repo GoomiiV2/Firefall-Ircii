@@ -406,7 +406,7 @@ end
 
 -- Return characters name without clan tag
 function GetCharacterName()
-	return string.gsub(GetCharacterName(), "%[.+%] ", "")
+	return string.gsub(Player.GetInfo(), "%[.+%] ", "")
 end
 
 -- Connect to an IRC Server
